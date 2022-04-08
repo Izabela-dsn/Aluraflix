@@ -1,5 +1,4 @@
-{
-  "type": "module",
+{ "type": "module",
   "name": "aluraflix",
   "version": "1.0.0",
   "description": "",
@@ -13,7 +12,11 @@
   "dependencies": {
     "body-parser": "^1.20.0",
     "express": "^4.17.3",
+<<<<<<< HEAD
     "mysql": "^2.18.1",
+=======
+    "mysql2": "^2.3.3",
+>>>>>>> main
     "path": "^0.12.7",
     "sequelize": "^6.18.0",
     "sequelize-cli": "^6.4.1"
