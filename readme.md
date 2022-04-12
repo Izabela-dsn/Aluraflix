@@ -5,6 +5,9 @@
 ## comandos git para atualizar o repo localmente
 - atualizando o branch `main` : `git pull`
 - atualizando a sua branch : `git merge main`
+
+## rodando o projeto
+- `npm run start`
     
 ## instalar dependências
 - dentro do projeto instale as dependencias:
