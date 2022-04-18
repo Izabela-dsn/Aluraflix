@@ -28,7 +28,16 @@ class VideosController {
       const umVideo = await database.videos.findOne({
         where: { id: Number(id) }
       })
-      return res.status(200).json(umVideo)
+
+      if (res.status(200)) {
+        if (umVideo != null) {
+          return res.json(umVideo)
+        } else {
+          return res.json({ mensagem: "Video não encontrado" })
+        }
+      } else {
+        return res.json({ mensagem: "Video não encontrado" })
+      }
     } catch (error) {
       return res.status(500).json(error.message)
     }
