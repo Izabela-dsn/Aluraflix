@@ -5,6 +5,7 @@ const router = Router()
 
 // post
 router.post("/videos", VideosController.criaVideo)
+
 // get
 router.get("/videos", VideosController.pegaTodosOsVideos)
 // get um video

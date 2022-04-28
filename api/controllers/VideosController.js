@@ -1,25 +1,12 @@
 const database = require("../models")
-const validaInformacoesVideo = require("../utils/validarInformacoesVideo")
+//const validaInformacoesVideo = require("../utils/validarInformacoesVideo")
 
 class VideosController {
   static async criaVideo(req, res) {
     const novoVideo = req.body
     try {
-      if (
-        validaInformacoesVideo(
-          novoVideo.titulo,
-          novoVideo.descricao,
-          novoVideo.url
-        )
-      ) {
-        const novoVideoCriado = await database.videos.create(novoVideo)
-        return res.status(200).json(novoVideoCriado)
-      } else {
-        return res.json({
-          mensagem:
-            "Todos os campos são obrigatórios e lembre-se de colocar uma URL válida"
-        })
-      }
+      const novoVideoCriado = await database.videos.create(novoVideo)
+      return res.status(200).json(novoVideoCriado)
     } catch (error) {
       return res.status(500).json(error.message)
     }
