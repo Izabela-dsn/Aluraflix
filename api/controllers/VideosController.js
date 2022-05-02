@@ -1,24 +1,36 @@
+const Sequelize = require("sequelize")
 const database = require("../models")
-//const validaInformacoesVideo = require("../utils/validarInformacoesVideo")
+const { Op } = Sequelize
 
 class VideosController {
   static async criaVideo(req, res) {
     const novoVideo = req.body
     try {
       const novoVideoCriado = await database.videos.create(novoVideo)
-      return res.status(200).json(novoVideoCriado)
+      return res.status(201).json(novoVideoCriado)
     } catch (error) {
-      return res.status(500).json(error.message)
+      return res.status(400).json(error.message)
     }
   }
 
   //get
   static async pegaTodosOsVideos(req, res) {
     try {
-      const todosOsVideos = await database.videos.findAll()
+      const where = {}
+      const titulo = req.query.search
+      titulo ? (where.titulo = {}) : null
+      titulo ? (where.titulo[Op.substring] = titulo) : null
+
+      const todosOsVideos = await database.videos.findAll({
+        where
+      })
       return res.status(200).json(todosOsVideos)
     } catch (error) {
-      return res.status(500).json(error.message)
+      console.log(error.name)
+      if (error.name === "TypeError") {
+        return res.status(500).json(error.message)
+      }
+      return res.status(404).json(error.message)
     }
   }
 
@@ -34,10 +46,10 @@ class VideosController {
         if (umVideo != null) {
           return res.json(umVideo)
         } else {
-          return res.json({ mensagem: "Video não encontrado" })
+          return res.status(404).json({ mensagem: "Video não encontrado" })
         }
       } else {
-        return res.json({ mensagem: "Video não encontrado" })
+        return res.status(404).json({ mensagem: "Video não encontrado" })
       }
     } catch (error) {
       return res.status(500).json(error.message)
@@ -64,7 +76,7 @@ class VideosController {
       const videoAtualizado = await database.videos.findOne({
         where: { id: Number(id) }
       })
-      return res.status(200).json(videoAtualizado)
+      return res.status(201).json(videoAtualizado)
     } catch (error) {
       return res.status(500).json(error.message)
     }
