@@ -1,48 +1,39 @@
 "use strict"
 const { Model } = require("sequelize")
 module.exports = (sequelize, DataTypes) => {
-  class videos extends Model {
+  class categorias extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      videos.belongsTo(models.categorias, { foreignKey: "categoria_id" })
+      // define association here
+      categorias.hasMany(models.videos, {
+        foreignKey: "categoria_id",
+        include: models.videos,
+        as: "videos"
+      })
     }
   }
-  videos.init(
+  categorias.init(
     {
       titulo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Por favor informar um título válido" },
+          notNull: { msg: "Por favor informar o título da categoria" },
           notEmpty: {
             args: true,
             msg: "O campo é obrigatório"
           }
         }
       },
-      descricao: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Por favor informar uma descrição válida" },
-          notEmpty: {
-            args: true,
-            msg: "O campo é obrigatório"
-          }
-        }
-      },
-      url: {
+      cor: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isUrl: {
-            args: true,
-            msg: "URL invalida"
-          },
+          notNull: { msg: "Por favor informar a cor em hexadecimal" },
           notEmpty: {
             args: true,
             msg: "O campo é obrigatório"
@@ -52,8 +43,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "videos"
+      modelName: "categorias"
     }
   )
-  return videos
+  return categorias
 }
