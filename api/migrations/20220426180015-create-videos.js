@@ -9,8 +9,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       categoria_id: {
-        allowNull: false,
         type: Sequelize.INTEGER,
+        defaultValue: 1,
+        allowNull: false,
         references: { model: "categorias", key: "id" }
       },
       titulo: {

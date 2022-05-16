@@ -6,6 +6,9 @@ class VideosController {
   static async criaVideo(req, res) {
     const novoVideo = req.body
     try {
+      novoVideo.categoria_id === " " || novoVideo.categoria_id === ""
+        ? (novoVideo.categoria_id = 1)
+        : (novoVideo.categoria_id = novoVideo.categoria_id)
       const novoVideoCriado = await database.videos.create(novoVideo)
       return res.status(201).json(novoVideoCriado)
     } catch (error) {
@@ -17,14 +20,26 @@ class VideosController {
   static async pegaTodosOsVideos(req, res) {
     try {
       const where = {}
+      // paginação
+      const page = req.query.page
+      const limit = page ? 5 : 5
+      const offset = page ? parseInt(page * limit) : 0
+      // busca
       const titulo = req.query.search
       titulo ? (where.titulo = {}) : null
       titulo ? (where.titulo[Op.substring] = titulo) : null
-
-      const todosOsVideos = await database.videos.findAll({
-        where
-      })
-      return res.status(200).json(todosOsVideos)
+      const todosOsVideos = await database.videos.findAll(
+        {
+          where
+        },
+        {
+          limit: limit,
+          offset: offset
+        }
+      )
+      return todosOsVideos != []
+        ? res.status(200).json(todosOsVideos)
+        : res.status(204).json({ mensagem: "videos não encontrados" })
     } catch (error) {
       console.log(error.name)
       if (error.name === "TypeError") {

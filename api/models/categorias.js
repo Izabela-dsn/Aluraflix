@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       categorias.hasMany(models.videos, {
         foreignKey: "categoria_id",
+        defaultValue: 1,
         include: models.videos,
         as: "videos"
       })

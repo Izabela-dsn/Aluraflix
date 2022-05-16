@@ -43,3 +43,25 @@
   - `use nome_da_base_de_dados`
   - `describe nome_da_tabela;`
 
+
+## autenticação
+
+- crie um model para o usuário com nome, email e senha.
+- faça a migration
+
+- crie o controller para add um novo usuário e mostrar todos os usuários
+- crie as rotas para os métodos do controller: `get` e um `post`
+- teste no insomnia
+
+- instala bcrypt : `npm install bcrypt`
+- add esse codigo no modelo do usuario para quando for gerado um novo usuario vai gerar um rash da senha.
+- `usuarios.addHook('beforeCreate', async (usuario) => {
+    const senhaHash = await bcrypt.hash(usuario.senha, 8);
+    usuario.senha = senhaHash;
+});`
+
+- criamos os middlewares
+- temos aqui a validação de usuario:
+
+  - instalar `npm install passport passport-local passport-http-bearer` `npm install jsonwebtoken`
+
