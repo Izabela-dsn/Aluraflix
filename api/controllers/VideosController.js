@@ -21,7 +21,7 @@ class VideosController {
     try {
       const where = {}
       // paginação
-      const { page } = req.query.page
+      const page = req.query.page
       const limit = page ? 5 : 5
       const offset = page ? parseInt(page * limit) : 0
       // busca

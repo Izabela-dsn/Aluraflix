@@ -1,5 +1,4 @@
 const database = require("../models")
-//const validaInformacoesCategoria = require("../utils/validarInformacoesCategorias")
 
 class CategoriasController {
   //post
@@ -27,10 +26,10 @@ class CategoriasController {
         if (umaCategoria != null) {
           return res.json(umaCategoria)
         } else {
-          return res.json({ mensagem: "Categoria não encontrada" })
+          return res.status(404).json({ mensagem: "Categoria não encontrada" })
         }
       } else {
-        return res.json({ mensagem: "Categoria não encontrada" })
+        return res.status(404).json({ mensagem: "Categoria não encontrada" })
       }
     } catch (error) {
       return res.status(500).json(error.message)
@@ -40,8 +39,16 @@ class CategoriasController {
   // get categorias
   static async pegarTodosAsCategorias(req, res) {
     try {
-      const categorias = await database.categorias.findAll()
-      return res.status(200).json(categorias)
+      const { page } = req.query
+      const limit = page ? 5 : 5
+      const offset = page ? parseInt(limit * page) : 0
+      const categorias = await database.categorias.findAll({
+        offset: offset,
+        limit: limit
+      })
+      return categorias.length != 0
+        ? res.status(200).json(categorias)
+        : res.status(204).json({ message: "não há categorias cadastradas" })
     } catch (error) {
       return res.status(500).json(error.massage)
     }
@@ -68,9 +75,18 @@ class CategoriasController {
   static async pegaVideosPorCategoria(req, res) {
     const { id } = req.params
     try {
-      const videosDaCategoria = await database.videos.findAll({
-        where: { categoria_id: Number(id) }
-      })
+      const { page } = req.query
+      const limit = page ? 5 : 5
+      const offset = page ? parseInt(page * limit) : 0
+      const videosDaCategoria = await database.videos.findAll(
+        {
+          where: { categoria_id: Number(id) }
+        },
+        {
+          limit: limit,
+          offset: offset
+        }
+      )
       return res.status(200).json(videosDaCategoria)
     } catch (error) {
       return res.status(500).json(error.message)
