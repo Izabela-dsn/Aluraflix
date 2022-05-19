@@ -40,7 +40,7 @@ class CategoriasController {
   static async pegarTodosAsCategorias(req, res) {
     try {
       const { page } = req.query
-      const limit = page ? 5 : 5
+      const limit = 3
       const offset = page ? parseInt(limit * page) : 0
       const categorias = await database.categorias.findAll({
         offset: offset,
