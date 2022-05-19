@@ -20,23 +20,22 @@ class VideosController {
   static async pegaTodosOsVideos(req, res) {
     try {
       const where = {}
+      console.log(where)
+
       // paginação
       const page = req.query.page
-      const limit = page ? 5 : 5
+      const limit = 3
       const offset = page ? parseInt(page * limit) : 0
+      console.log(offset)
       // busca
       const titulo = req.query.search
       titulo ? (where.titulo = {}) : null
       titulo ? (where.titulo[Op.substring] = titulo) : null
-      const todosOsVideos = await database.videos.findAll(
-        {
-          where
-        },
-        {
-          limit: limit,
-          offset: offset
-        }
-      )
+      const todosOsVideos = await database.videos.findAndCountAll({
+        where,
+        limit: limit,
+        offset: offset
+      })
       return todosOsVideos != []
         ? res.status(200).json(todosOsVideos)
         : res.status(204).json({ mensagem: "videos não encontrados" })
