@@ -14,6 +14,8 @@ router.get(
   autenticaUsuario.bearer,
   VideosController.pegaTodosOsVideos
 )
+
+router.get("/videos/free", VideosController.pegaTodosOsVideos)
 // get um video
 router.get("/videos/:id", autenticaUsuario.bearer, VideosController.pegaUmVideo)
 // delete
